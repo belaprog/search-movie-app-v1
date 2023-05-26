@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
 import API from "../API";
+import { isPersistedState } from "../helpers";
+
+const initialState = {
+  page: 0,
+  results: [],
+  total_pages: 0,
+  total_results: 0,
+};
 
 export const useHomeFetch = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [state, setState] = useState({
-    page: 0,
-    results: [],
-    total_pages: 0,
-    total_results: 0,
-  });
+  const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
@@ -35,12 +38,18 @@ export const useHomeFetch = () => {
 
   // Initial render and search
   useEffect(() => {
-    setState({
-      page: 0,
-      results: [],
-      total_pages: 0,
-      total_results: 0,
-    });
+    if (!searchTerm) {
+      const sessionState = isPersistedState("cookies", true);
+      console.log(sessionState);
+
+      if (sessionState) {
+        console.log("Grabbing from sessionStorage");
+        setState(sessionState);
+        return;
+      }
+    }
+    console.log("Grabbing from API");
+    setState(initialState);
     fetchMovies(1, searchTerm);
   }, [searchTerm]);
 
@@ -51,6 +60,11 @@ export const useHomeFetch = () => {
     fetchMovies(state.page + 1, searchTerm);
     setIsLoadingMore(false);
   }, [isLoadingMore, searchTerm, state.page]);
+
+  // Write to seessionStorage
+  useEffect(() => {
+    if (!searchTerm) sessionStorage.setItem("cookies", JSON.stringify(state));
+  }, [searchTerm, state]);
 
   return {
     state,
