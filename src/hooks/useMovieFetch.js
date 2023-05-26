@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import API from "../API";
-import { isPersistedState } from "../helpers";
+import { useState, useEffect } from 'react';
+import API from '../API';
+// import { isPersistedState } from '../helpers';
 
-export const useMovieFetch = (movieId) => {
+export const useMovieFetch = movieId => {
   const [state, setState] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -17,7 +17,7 @@ export const useMovieFetch = (movieId) => {
         const credits = await API.fetchCredits(movieId);
         // Get Directors only
         const directors = credits.crew.filter(
-          (member) => member.job === "Director"
+          member => member.job === 'Director'
         );
 
         setState({
@@ -32,21 +32,21 @@ export const useMovieFetch = (movieId) => {
       }
     };
 
-    const sessionState = isPersistedState(movieId);
+    // const sessionState = isPersistedState(movieId);
 
-    if (sessionState) {
+    /*     if (sessionState) {
       setState(sessionState);
       setLoading(false);
       return;
-    }
+    } */
 
     fetchMovie();
   }, [movieId]);
 
   // Write to sessionStorage
-  useEffect(() => {
+  /*  useEffect(() => {
     sessionStorage.setItem(movieId, JSON.stringify(state));
-  }, [movieId, state]);
+  }, [movieId, state]); */
 
   return {
     state,
