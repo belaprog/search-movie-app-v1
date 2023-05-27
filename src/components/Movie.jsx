@@ -1,18 +1,18 @@
-import { useParams } from "react-router-dom";
+import { useParams } from 'react-router-dom';
 
-import { IMAGE_BASE_URL, POSTER_SIZE } from "../config";
+import { IMAGE_BASE_URL, POSTER_SIZE } from '../config';
 
-import { useMovieFetch } from "../hooks/useMovieFetch";
+import { useMovieFetch } from '../hooks/useMovieFetch';
 
-import BreadCrumb from "./BreadCrumb";
+import BreadCrumb from './BreadCrumb';
 
-import Grid from "./Grid";
-import Spinner from "./Spinner";
-import MovieInfo from "./MovieInfo";
-import MovieInfoBar from "./MovieInfoBar";
-import Actor from "./Actor";
+import Grid from './Grid';
+import Spinner from './Spinner';
+import MovieInfo from './MovieInfo';
+import MovieInfoBar from './MovieInfoBar';
+import Actor from './Actor';
 
-import NoImage from "../images/no_image.jpg";
+import NoImage from '../images/no_image.jpg';
 
 export default function Movie() {
   const { movieId } = useParams();
@@ -21,7 +21,6 @@ export default function Movie() {
   if (loading) return <Spinner />;
   if (error) return <div>Something went wrong...</div>;
 
-  console.log(movie);
   return (
     <>
       <BreadCrumb movieTitle={movie.original_title} />
@@ -31,8 +30,8 @@ export default function Movie() {
         budget={movie.budget}
         revenue={movie.revenue}
       />
-      <Grid header="Actors">
-        {movie.actors?.map((actor) => (
+      <Grid header='Actors'>
+        {movie.actors?.map(actor => (
           <Actor
             key={actor.credit_id}
             name={actor.name}

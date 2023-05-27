@@ -53,7 +53,6 @@ export const useHomeFetch = () => {
 
   // Initial render
   useEffect(() => {
-    console.log('Grabbing from API');
     setState(initialState);
     fetchMovies(1);
   }, []);
